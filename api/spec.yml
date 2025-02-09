@@ -1,0 +1,518 @@
+openapi: 3.0.0
+info:
+  title: "User management API"
+  description: "for participiant test"
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8080
+    description: local environment
+tags:
+- name: Health
+  description: health check
+- name: User
+  description: user management
+paths:
+  /health:
+    get:
+      operationId: healthCheck
+      summary: Health check server alive
+      tags: 
+        - Health
+      responses:
+        '200':
+          description: OK
+
+  /user:
+    post:
+      operationId: createUser
+      summary: "[Required] Create user and save to database"
+      tags:
+      - User
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUserRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateUserResponse'
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '409':
+          description: 'conflict duplicate email'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "duplicate_email"
+                  message: "email already in use"
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+
+  /users:
+    get:
+      operationId: getListUser
+      summary: "[Required] Retrieve users information can be filter limit, offset, sorting by created_at direction asc or desc"
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: sort_direction
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/GetListUserResponse'
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+
+  /user/{id}:
+    get:
+      operationId: getUser
+      summary: "[Required] Retrieve user information by id"
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/GetUserResponse'
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+    put:
+      operationId: updateUser
+      summary: "[Required] Update user information"
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateUserRequest'
+      responses:
+        '200':
+          description: Update user success without content
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '409':
+          description: 'User not exist'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "user_not_exist"
+                  message: "User not exist"
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+
+    delete:
+      operationId: deleteUser
+      summary: "[Required] Delete user (hard delete)"
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Delete user success without content
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '409':
+          description: 'User not exist'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "user_not_exist"
+                  message: "User not exist"
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+
+  /user/{id}/profile_picture:
+    post:
+      operationId: uploadProfilePicture
+      summary: "[Optional] Upload user profile picture; upload picture and save picture as base64 into database"
+      tags:
+        - Profile Picture
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - picture
+              properties:
+                picture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Upload profile picture success
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '422':
+          description: 'Unsupport media type'
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                code: 'unsupport_media_type'
+                message: 'Unsupport media type $typeOfFile'
+        '409':
+          description: 'User not exist'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "user_not_exist"
+                  message: "User not exist"
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+
+    get:
+      operationId: getProfilePicture
+      summary: "[Optional] Get user profile picture; stream user profile picture"
+      tags:
+        - Profile Picture
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '200':
+          description: Get user profile success
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: 'bad request'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "invalid"
+                  message: "validate messsage ..."
+        '409':
+          description: 'User not exist'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "user_not_exist"
+                  message: "User not exist"
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/GenericResponse'
+                example:
+                  code: "internal"
+                  message: "internal server error"
+        
+components:
+  schemas:
+    User:
+      type: object
+      required:
+      - id
+      - first_name
+      - last_name
+      - age
+      - gender
+      - phone_number
+      - email
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        gender:
+          type: string
+        age:
+          type: integer
+        phone_number:
+          type: string
+        email:
+          type: string
+          format: email
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    GenericResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object  
+          
+
+  requestBodies:
+    CreateUserRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - first_name
+            - last_name
+            - age
+            - gender
+            - email
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              age: 
+                type: integer
+              gender:
+                type: string
+                enum:
+                  - male
+                  - female
+                  - non-binary
+              phone_number:
+                type: string
+              email:
+                type: string
+                format: email
+
+    UpdateUserRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - first_name
+            - last_name
+            - age
+            - gender
+            - email
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              age: 
+                type: integer
+              gender:
+                type: string
+                enum:
+                  - male
+                  - female
+                  - non-binary
+              phone_number:
+                type: string
+              email:
+                type: string
+                format: email
+
+  responses:
+    CreateUserResponse:
+      description: create user success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/GenericResponse'
+              - type: object
+            type: object
+            required:
+            - id
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+
+    GetUserResponse:
+      description: retrieve user information success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/GenericResponse'
+              - type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                $ref: '#/components/schemas/User'
+
+    GetListUserResponse:
+      description: retrieve users information success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/GenericResponse'
+              - type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+
+
+
+
