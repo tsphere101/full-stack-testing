@@ -1,5 +1,5 @@
 export class GenericResponseDto {
-  code: string;
-  message: string;
-  data?: object;
+    code: string;
+    message: string;
+    data?: object;
 }

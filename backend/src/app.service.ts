@@ -3,14 +3,14 @@ import { GenericResponseDto } from './generic-response.dto';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
+    getHello(): string {
+        return 'Hello World!';
+    }
 
-  getHealth(): GenericResponseDto {
-    return {
-      code: '200',
-      message: 'OK',
-    };
-  }
+    getHealth(): GenericResponseDto {
+        return {
+            code: '200',
+            message: 'OK',
+        };
+    }
 }
