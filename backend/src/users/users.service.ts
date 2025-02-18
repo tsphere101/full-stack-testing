@@ -31,7 +31,15 @@ export class UsersService {
     }
 
     async findOne(id: string): Promise<User> {
-        return this.userRepository.findOneOrFail({ where: { id } });
+        try {
+            const user = await this.userRepository.findOneOrFail({ where: { id } });
+            return user
+        } catch (error) {
+            if (error instanceof EntityNotFoundError) {
+                throw new NotFoundException(`User with ID '${id}' not found`);
+            }
+            throw error;
+        }
     }
 
     async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
