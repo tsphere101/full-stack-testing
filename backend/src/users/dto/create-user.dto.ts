@@ -38,4 +38,8 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsEmail()
     email: string;
+
+    @IsOptional()
+    @IsString()
+    picture?: string;
 }

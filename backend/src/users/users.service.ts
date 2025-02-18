@@ -69,4 +69,15 @@ export class UsersService {
             throw error;
         }
     }
+
+    async uploadProfilePicture(id: string, picture: Express.Multer.File): Promise<User> {
+        const base64Image = picture.buffer.toString('base64');
+        const updateUserDto: UpdateUserDto = { picture: base64Image };
+        return this.update(id, updateUserDto);
+    }
+
+    async getProfilePicture(id: string): Promise<string | null> {
+        const user = await this.findOne(id);
+        return user.picture;
+    }
 }
