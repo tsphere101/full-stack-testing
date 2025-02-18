@@ -1,5 +1,4 @@
 import {
-    BadRequestException,
     ConflictException,
     Injectable,
     NotFoundException,
@@ -15,25 +14,13 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-    ) {}
+    ) { }
     async create(createUserDto: CreateUserDto): Promise<User> {
-        if (!createUserDto.email) {
-            throw new BadRequestException('email is required');
-        }
         const existingUser = await this.userRepository.findOne({
             where: { email: createUserDto.email },
         });
         if (existingUser) {
             throw new ConflictException('email already in use');
-        }
-        if (!createUserDto.firstName) {
-            throw new BadRequestException('first name is required');
-        }
-        if (!createUserDto.lastName) {
-            throw new BadRequestException('last name is required');
-        }
-        if (!createUserDto.age) {
-            throw new BadRequestException('age name is required');
         }
         const user = this.userRepository.create(createUserDto);
         return await this.userRepository.save(user);
