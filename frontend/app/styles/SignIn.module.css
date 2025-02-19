@@ -1,12 +1,3 @@
-.container {
-    display: flex;
-    align-items: center; /* Center content horizontally */
-    justify-content: center; /* Center content vertically */
-    min-height: 100vh; /* Full viewport height */
-    color: white; /* Text color */
-    padding: 20px; /* Add some padding */
-    box-sizing: border-box; /* Include padding in width/height */
-}
 
 .form {
     display: flex;
@@ -96,15 +87,9 @@
 }
 
 .title {
-    font-size: 2em;
+    font-size: 2rem;
     font-weight: 600;
     margin-bottom: 1em;
+    color: #FFFFFF;
 }
 
-.purpleBackground {
-    background-color: #4338CA;
-}
-
-.darkPurpleBackground{
-    background-color:#081028;
-}
