@@ -1,0 +1,110 @@
+.container {
+    display: flex;
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    min-height: 100vh; /* Full viewport height */
+    color: white; /* Text color */
+    padding: 20px; /* Add some padding */
+    box-sizing: border-box; /* Include padding in width/height */
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Take up full width on smaller screens */
+    max-width: 400px; /* Limit width on larger screens */
+    gap: 16px; /* Consistent spacing between elements */
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+     /* Consistent spacing between label and input */
+}
+
+.inputGroup label {
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #ccc;  /* Lighter color for labels */
+}
+
+.inputField {
+    padding: 12px;
+    border: 1px solid #555; /* Subtle border */
+    border-radius: 4px;
+    background-color: #1a1549;
+    color: #A0AFBA;
+    font-size: 16px;
+    outline: none; /* Remove default focus outline */
+}
+.inputField::placeholder {
+    color:#777;
+}
+.inputField:focus{
+    border-color: #6c63ff;
+}
+
+
+.passwordInputGroup {
+    position: relative; /* For the eye icon positioning */
+}
+
+.passwordToggle {
+    position: absolute;
+    top: 73%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999; /* Icon color */
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1.2em;
+}
+
+
+.signInButton {
+    background-color: #6c63ff; /* Button color */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+}
+
+.signInButton:hover {
+    background-color: #5a53cc; /* Slightly darker on hover */
+}
+.signInButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.forgotPassword {
+    color: #6c63ff;
+    text-decoration: none; /* Remove underline */
+    font-size: 14px;
+    margin-top: 8px; /* Space above the link */
+    text-align: center; /* Center the link */
+    display: block;
+}
+
+.forgotPassword:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+.title {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+
+.purpleBackground {
+    background-color: #4338CA;
+}
+
+.darkPurpleBackground{
+    background-color:#081028;
+}
