@@ -256,8 +256,6 @@ export default function DashBoard() {
                                 <SummaryCard
                                     key={index}
                                     title={card.title}
-                                    value={card.value}
-                                    changes={card.changes}
                                 />
                             );
                         })}
