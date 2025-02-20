@@ -14,7 +14,7 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-    ) { }
+    ) {}
     async create(createUserDto: CreateUserDto): Promise<User> {
         const existingUser = await this.userRepository.findOne({
             where: { email: createUserDto.email },
@@ -32,8 +32,10 @@ export class UsersService {
 
     async findOne(id: string): Promise<User> {
         try {
-            const user = await this.userRepository.findOneOrFail({ where: { id } });
-            return user
+            const user = await this.userRepository.findOneOrFail({
+                where: { id },
+            });
+            return user;
         } catch (error) {
             if (error instanceof EntityNotFoundError) {
                 throw new NotFoundException(`User with ID '${id}' not found`);
@@ -70,7 +72,10 @@ export class UsersService {
         }
     }
 
-    async uploadProfilePicture(id: string, picture: Express.Multer.File): Promise<User> {
+    async uploadProfilePicture(
+        id: string,
+        picture: Express.Multer.File,
+    ): Promise<User> {
         const base64Image = picture.buffer.toString('base64');
         const updateUserDto: UpdateUserDto = { picture: base64Image };
         return this.update(id, updateUserDto);

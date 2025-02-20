@@ -4,7 +4,13 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { ConflictException, HttpStatus, INestApplication, NotFoundException, ValidationPipe } from '@nestjs/common';
+import {
+    ConflictException,
+    HttpStatus,
+    INestApplication,
+    NotFoundException,
+    ValidationPipe,
+} from '@nestjs/common';
 import * as request from 'supertest';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,9 +29,7 @@ describe('UserController', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [UserController],
-            providers: [
-                { provide: UsersService, useFactory: mockUserService },
-            ],
+            providers: [{ provide: UsersService, useFactory: mockUserService }],
         }).compile();
 
         controller = module.get<UserController>(UserController);
@@ -70,7 +74,7 @@ describe('UserController', () => {
             const invalidUserDto = {
                 firstName: '', // Invalid: Empty string
                 lastName: 'Doe',
-                age: 10,     // Invalid: Below minimum age
+                age: 10, // Invalid: Below minimum age
                 gender: 'invalid-gender', // Invalid: Not in enum
                 email: 'invalid-email', // Invalid: Not email format
             };
@@ -115,13 +119,17 @@ describe('UserController', () => {
                 .get(`/user/${invalidUserId}`)
                 .expect(HttpStatus.BAD_REQUEST);
 
-            expect(response.body.message).toEqual(['Validation failed (uuid is expected)']);
+            expect(response.body.message).toEqual([
+                'Validation failed (uuid is expected)',
+            ]);
             expect(service.findOne).not.toHaveBeenCalled();
         });
 
         it('should return NotFoundException if user not found', async () => {
             const userId = uuidv4();
-            jest.spyOn(service, 'findOne').mockRejectedValue(new NotFoundException());
+            jest.spyOn(service, 'findOne').mockRejectedValue(
+                new NotFoundException(),
+            );
 
             await request(app.getHttpServer())
                 .get(`/user/${userId}`)
@@ -168,14 +176,18 @@ describe('UserController', () => {
                 .send(updateUserDto)
                 .expect(HttpStatus.BAD_REQUEST);
 
-            expect(response.body.message).toEqual(['Validation failed (uuid is expected)']);
+            expect(response.body.message).toEqual([
+                'Validation failed (uuid is expected)',
+            ]);
             expect(service.update).not.toHaveBeenCalled();
         });
 
         it('should return NotFoundException if user not found during update', async () => {
             const userId = uuidv4();
             const updateUserDto: UpdateUserDto = { firstName: 'Updated Name' };
-            jest.spyOn(service, 'update').mockRejectedValue(new NotFoundException());
+            jest.spyOn(service, 'update').mockRejectedValue(
+                new NotFoundException(),
+            );
 
             await request(app.getHttpServer())
                 .put(`/user/${userId}`)
@@ -205,13 +217,18 @@ describe('UserController', () => {
                 .delete(`/user/${invalidUserId}`)
                 .expect(HttpStatus.BAD_REQUEST);
 
-            expect(response.body.message).toEqual(['Validation failed (uuid is expected)']);
+            expect(response.body.message).toEqual([
+                'Validation failed (uuid is expected)',
+            ]);
             expect(service.remove).not.toHaveBeenCalled();
         });
 
-        it('should return ConflictException if user not found during delete (as per service logic)', async () => { // Corrected expectation to ConflictException
+        it('should return ConflictException if user not found during delete (as per service logic)', async () => {
+            // Corrected expectation to ConflictException
             const userId = uuidv4();
-            jest.spyOn(service, 'remove').mockRejectedValue(new ConflictException(`User with ID ${userId} not found`));
+            jest.spyOn(service, 'remove').mockRejectedValue(
+                new ConflictException(`User with ID ${userId} not found`),
+            );
 
             await request(app.getHttpServer())
                 .delete(`/user/${userId}`)

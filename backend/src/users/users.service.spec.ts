@@ -75,7 +75,9 @@ describe('UsersService', () => {
                 gender: 'male',
                 email: 'john.doe@example.com',
             };
-            jest.spyOn(repository, 'findOne').mockResolvedValue(createUserDto as any); // Mock existing user
+            jest.spyOn(repository, 'findOne').mockResolvedValue(
+                createUserDto as any,
+            ); // Mock existing user
 
             await expect(service.create(createUserDto)).rejects.toThrow(
                 ConflictException,
@@ -101,7 +103,9 @@ describe('UsersService', () => {
                 createdAt: new Date(),
                 updatedAt: new Date(),
             };
-            jest.spyOn(repository, 'findOneOrFail').mockResolvedValue(expectedUser);
+            jest.spyOn(repository, 'findOneOrFail').mockResolvedValue(
+                expectedUser,
+            );
 
             const result = await service.findOne(userId);
 
@@ -146,8 +150,9 @@ describe('UsersService', () => {
                 updatedAt: new Date(),
             };
 
-
-            jest.spyOn(repository, 'findOneOrFail').mockResolvedValue(existingUser);
+            jest.spyOn(repository, 'findOneOrFail').mockResolvedValue(
+                existingUser,
+            );
             jest.spyOn(repository, 'save').mockResolvedValue(updatedUser);
             jest.spyOn(service, 'findOne').mockResolvedValue(updatedUser); // Mock service.findOne to return updated user
 
@@ -183,8 +188,12 @@ describe('UsersService', () => {
     describe('remove', () => {
         it('should delete user successfully', async () => {
             const userId = uuidv4();
-            jest.spyOn(repository, 'findOneOrFail').mockResolvedValue({} as User); // Mock findOneOrFail to resolve
-            jest.spyOn(repository, 'delete').mockResolvedValue({ affected: 1 } as any);
+            jest.spyOn(repository, 'findOneOrFail').mockResolvedValue(
+                {} as User,
+            ); // Mock findOneOrFail to resolve
+            jest.spyOn(repository, 'delete').mockResolvedValue({
+                affected: 1,
+            } as any);
 
             await service.remove(userId);
 

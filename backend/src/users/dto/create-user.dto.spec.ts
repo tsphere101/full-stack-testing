@@ -24,7 +24,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'firstName' && error.constraints && error.constraints.isNotEmpty)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'firstName' &&
+                    error.constraints &&
+                    error.constraints.isNotEmpty,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if lastName is empty', async () => {
@@ -37,7 +44,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'lastName' && error.constraints && error.constraints.isNotEmpty)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'lastName' &&
+                    error.constraints &&
+                    error.constraints.isNotEmpty,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if age is not a number', async () => {
@@ -50,7 +64,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'age' && error.constraints && error.constraints.isNumber)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'age' &&
+                    error.constraints &&
+                    error.constraints.isNumber,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if age is less than 15', async () => {
@@ -63,7 +84,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'age' && error.constraints && error.constraints.min)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'age' &&
+                    error.constraints &&
+                    error.constraints.min,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if age is greater than 120', async () => {
@@ -76,7 +104,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'age' && error.constraints && error.constraints.max)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'age' &&
+                    error.constraints &&
+                    error.constraints.max,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if gender is empty', async () => {
@@ -89,7 +124,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'gender' && error.constraints && error.constraints.isNotEmpty)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'gender' &&
+                    error.constraints &&
+                    error.constraints.isNotEmpty,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if gender is not in allowed enum', async () => {
@@ -102,7 +144,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'gender' && error.constraints && error.constraints.isIn)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'gender' &&
+                    error.constraints &&
+                    error.constraints.isIn,
+            ),
+        ).toBeTruthy();
     });
 
     it('should pass validation if phoneNumber is optional and not provided', async () => {
@@ -128,7 +177,14 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'email' && error.constraints && error.constraints.isNotEmpty)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'email' &&
+                    error.constraints &&
+                    error.constraints.isNotEmpty,
+            ),
+        ).toBeTruthy();
     });
 
     it('should fail validation if email is not in email format', async () => {
@@ -141,6 +197,13 @@ describe('CreateUserDto', () => {
 
         const errors = await validate(createUserDto);
         expect(errors.length).toBeGreaterThan(0);
-        expect(errors.some(error => error.property === 'email' && error.constraints && error.constraints.isEmail)).toBeTruthy();
+        expect(
+            errors.some(
+                (error) =>
+                    error.property === 'email' &&
+                    error.constraints &&
+                    error.constraints.isEmail,
+            ),
+        ).toBeTruthy();
     });
 });

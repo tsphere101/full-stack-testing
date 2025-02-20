@@ -25,7 +25,7 @@ import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UsersService) { }
+    constructor(private readonly userService: UsersService) {}
 
     @Post()
     @UsePipes(new ValidationPipe())
@@ -54,16 +54,25 @@ export class UserController {
 
     @Post(':id/profile_picture')
     @UseInterceptors(FileInterceptor('picture'))
-    async uploadProfilePicture(@Param('id', new ParseUUIDPipe()) id: string, @UploadedFile(ProfilePictureValidationPipe) picture: Express.Multer.File): Promise<User> {
+    async uploadProfilePicture(
+        @Param('id', new ParseUUIDPipe()) id: string,
+        @UploadedFile(ProfilePictureValidationPipe)
+        picture: Express.Multer.File,
+    ): Promise<User> {
         return await this.userService.uploadProfilePicture(id, picture);
-
     }
 
     @Get(':id/profile_picture')
-    async getProfilePicture(@Param('id', new ParseUUIDPipe()) id: string, @Res() res: Response): Promise<void> {
-        const profilePictureBase64 = await this.userService.getProfilePicture(id);
+    async getProfilePicture(
+        @Param('id', new ParseUUIDPipe()) id: string,
+        @Res() res: Response,
+    ): Promise<void> {
+        const profilePictureBase64 =
+            await this.userService.getProfilePicture(id);
         if (!profilePictureBase64) {
-            res.status(HttpStatus.NOT_FOUND).send({ message: 'Profile picture not found' }); // Explicitly handle not found
+            res.status(HttpStatus.NOT_FOUND).send({
+                message: 'Profile picture not found',
+            }); // Explicitly handle not found
         }
         const imageBuffer = Buffer.from(profilePictureBase64, 'base64');
         res.writeHead(HttpStatus.OK, {
@@ -73,4 +82,3 @@ export class UserController {
         res.end(imageBuffer);
     }
 }
-
