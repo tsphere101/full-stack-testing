@@ -20,13 +20,9 @@ function DashboardButton({
 function SummaryCard({
     title,
     icon,
-    value,
-    changes,
 }: {
     title: string;
     icon?: string;
-    value?: string;
-    changes?: string;
 }): JSX.Element {
     return (
         <>
