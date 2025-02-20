@@ -25,7 +25,7 @@ import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UsersService) {}
+    constructor(private readonly userService: UsersService) { }
 
     @Post()
     @UsePipes(new ValidationPipe())
@@ -41,7 +41,7 @@ export class UserController {
     @Put(':id')
     async update(
         @Param('id', new ParseUUIDPipe()) id: string,
-        user: UpdateUserDto,
+        @Body() user: UpdateUserDto,
     ): Promise<User> {
         return await this.userService.update(id, user);
     }
