@@ -3,23 +3,64 @@ import React from 'react';
 import Button from '@/app/components/Button';
 import Input from '@/app/components/Input';
 import SignInForm from '@/app/components/SignInForm';
-import { JSX, FormEvent, useState, ChangeEvent } from 'react';
+import { JSX, FormEvent, useState, ChangeEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Page(): JSX.Element {
     const router = useRouter();
-    const handleSignUpSecondStage: (e: FormEvent) => void = (e: FormEvent) => {
+    const [signupData, setSignupData] = useState({});
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const signupDataString = sessionStorage.getItem('signupData') ?? '';
+            if (!signupDataString) {
+                router.push('/signup');
+                alert('No signup data found. Please start the signup process again.');
+            } else {
+                setSignupData(JSON.parse(signupDataString));
+            }
+        }
+    }, [router]);
+
+    const handleSignUpSecondStage: (e: FormEvent) => Promise<void> = async (e: FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setLoading(false);
-        router.push('/dashboard');
+        if (!signupData) {
+            return
+        }
+        const updatedSignupData = {
+            ...signupData,
+            firstName: fullName.split(' ')[0],
+            lastName: fullName.split(' ')[1],
+            age: Number(age),
+            gender: gender,
+        };
+        try {
+            console.log(updatedSignupData)
+            const response = await fetch(`http://localhost:3001/user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedSignupData),
+            })
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(`Signup failed: ${errorData.message || errorData.statusCode}`);
+                return;
+            }
+            router.push('/dashboard');
+        } catch (error) {
+            console.error('Sign-up step 2 error:', error);
+            alert(`An error occurred. ${error}`);
+        } finally {
+            setLoading(false);
+        }
     };
     const [fullName, setFullName] = useState('');
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
     const [loading, setLoading] = useState(false);
     const onAgeChange: (e: React.ChangeEvent) => void = (e) => {
-        // Check if e is input element
         if (!(e.target instanceof HTMLInputElement)) {
             return;
         }
