@@ -8,19 +8,24 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { UserResponseMessages } from 'src/enums/user-response-messages.enum';
+
+function errorMessageUserNotFound(id: string): string {
+    return `User with ID '${id}' not found`
+}
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-    ) {}
+    ) { }
     async create(createUserDto: CreateUserDto): Promise<User> {
         const existingUser = await this.userRepository.findOne({
             where: { email: createUserDto.email },
         });
         if (existingUser) {
-            throw new ConflictException('email already in use');
+            throw new ConflictException(UserResponseMessages.EMAIL_ALREADY_IN_USE);
         }
         const user = this.userRepository.create(createUserDto);
         return await this.userRepository.save(user);
@@ -38,7 +43,7 @@ export class UsersService {
             return user;
         } catch (error) {
             if (error instanceof EntityNotFoundError) {
-                throw new NotFoundException(`User with ID '${id}' not found`);
+                throw new NotFoundException(errorMessageUserNotFound(id));
             }
             throw error;
         }
@@ -54,7 +59,7 @@ export class UsersService {
             return this.findOne(id);
         } catch (error) {
             if (error instanceof EntityNotFoundError) {
-                throw new NotFoundException(`User with ID '${id}' not found`);
+                throw new NotFoundException(errorMessageUserNotFound(id));
             }
             throw error;
         }
@@ -66,7 +71,7 @@ export class UsersService {
             await this.userRepository.delete(id);
         } catch (error) {
             if (error instanceof EntityNotFoundError) {
-                throw new ConflictException(`User with ID ${id} not found`);
+                throw new ConflictException(errorMessageUserNotFound(id));
             }
             throw error;
         }

@@ -8,6 +8,7 @@ import {
     Max,
     Min,
 } from 'class-validator';
+import { UserResponseMessages } from 'src/enums/user-response-messages.enum';
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -27,7 +28,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsIn(['male', 'female', 'non-binary'], {
         message:
-            'gender must be one of the following values: male, female, non-binary',
+            UserResponseMessages.GENDER_NOT_VALID,
     })
     gender: string;
 

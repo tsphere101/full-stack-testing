@@ -8,11 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
-            host: '127.0.0.1',
-            port: 5433,
-            username: 'postgres',
-            password: 'postgres',
-            database: 'user_dev',
+            url: process.env.DATABASE_URL,
             entities: [__dirname + '/**/*.entity{.ts,.js}'],
             synchronize: true,
         }),
@@ -21,4 +17,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
