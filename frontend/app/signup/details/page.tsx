@@ -14,18 +14,22 @@ export default function Page(): JSX.Element {
             const signupDataString = sessionStorage.getItem('signupData') ?? '';
             if (!signupDataString) {
                 router.push('/signup');
-                alert('No signup data found. Please start the signup process again.');
+                alert(
+                    'No signup data found. Please start the signup process again.'
+                );
             } else {
                 setSignupData(JSON.parse(signupDataString));
             }
         }
     }, [router]);
 
-    const handleSignUpSecondStage: (e: FormEvent) => Promise<void> = async (e: FormEvent) => {
+    const handleSignUpSecondStage: (e: FormEvent) => Promise<void> = async (
+        e: FormEvent
+    ) => {
         e.preventDefault();
         setLoading(true);
         if (!signupData) {
-            return
+            return;
         }
         const updatedSignupData = {
             ...signupData,
@@ -35,17 +39,19 @@ export default function Page(): JSX.Element {
             gender: gender,
         };
         try {
-            console.log(updatedSignupData)
+            console.log(updatedSignupData);
             const response = await fetch(`http://localhost:3001/user`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(updatedSignupData),
-            })
+            });
             if (!response.ok) {
                 const errorData = await response.json();
-                alert(`Signup failed: ${errorData.message || errorData.statusCode}`);
+                alert(
+                    `Signup failed: ${errorData.message || errorData.statusCode}`
+                );
                 return;
             }
             router.push('/dashboard');
