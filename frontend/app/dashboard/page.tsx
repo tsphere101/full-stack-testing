@@ -1,5 +1,6 @@
 import React, { JSX } from 'react';
 import './dashboard.css';
+import StatCard from '../components/StatCard';
 
 function DashboardButton({
     text,
@@ -17,27 +18,6 @@ function DashboardButton({
     );
 }
 
-function SummaryCard({
-    title,
-    icon,
-}: {
-    title: string;
-    icon?: string;
-}): JSX.Element {
-    return (
-        <>
-            <div className={`max-w-[300px]`}>
-                <div className={`flex flex-row justify-between w-full`}>
-                    <div>
-                        {icon}
-                        {title}
-                    </div>
-                    <div>...</div>
-                </div>
-            </div>
-        </>
-    );
-}
 
 export default function DashBoard() {
     const firstName = 'John';
@@ -45,28 +25,39 @@ export default function DashBoard() {
     const dashboardMenus: string[] = ['All Page', 'Product', 'Report', 'Task'];
     const profileImage =
         'https://th-thumbnailer.cdn-si-edu.com/ii_ZQzqzZgBKT6z9DVNhfPhZe5g=/fit-in/1600x0/filters:focal(1061x707:1062x708)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/55/95/55958815-3a8a-4032-ac7a-ff8c8ec8898a/gettyimages-1067956982.jpg';
-    const summaryCards = [
-        {
-            title: 'Pageview',
-            value: '50.8K',
-            changes: '28.4%',
-        },
-        {
-            title: 'Monthly users',
-            value: '23.6K',
-            changes: '-12.6%',
-        },
-        {
-            title: 'New sign ups',
-            value: '756',
-            changes: '3.1%',
-        },
-        {
-            title: 'Subscriptions',
-            value: '2.3K',
-            changes: '11.3%',
-        },
+
+    const PageViewsIcon = () => (
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M0.991853 7.20145C1.61908 6.09488 3.73147 3.02991 7.88718 3.02991C12.0429 3.02991 14.1553 6.09488 14.7825 7.20145C14.922 7.44761 14.922 7.74026 14.7825 7.98642C14.1553 9.09299 12.0429 12.158 7.88718 12.158C3.73147 12.158 1.61908 9.09299 0.991854 7.98642C0.852325 7.74026 0.852325 7.44761 0.991853 7.20145ZM10.4241 7.5943C10.4241 8.99466 9.28885 10.1299 7.88849 10.1299C6.48814 10.1299 5.35292 8.99466 5.35292 7.5943C5.35292 6.19394 6.48814 5.05873 7.88849 5.05873C9.28885 5.05873 10.4241 6.19394 10.4241 7.5943Z" fill="#AEB9E1" />
+        </svg>
+    )
+
+    const MonthlyUserIcon = () => (
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.960449 10.9592C0.960449 9.12106 2.45053 7.63098 4.28864 7.63098H8.0147C9.85281 7.63098 11.3429 9.12106 11.3429 10.9592C11.3429 11.5719 10.8462 12.0686 10.2335 12.0686H2.06985C1.45714 12.0686 0.960449 11.5719 0.960449 10.9592Z" fill="#AEB9E1" />
+            <path d="M6.15371 6.78556C7.78758 6.78556 9.1121 5.46104 9.1121 3.82717C9.1121 2.19329 7.78758 0.868774 6.15371 0.868774C4.51983 0.868774 3.19531 2.19329 3.19531 3.82717C3.19531 5.46104 4.51983 6.78556 6.15371 6.78556Z" fill="#AEB9E1" />
+        </svg>
+    )
+
+    const NewSignupsIcon = () => (
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M12.979 6.96875C12.979 10.2825 10.2927 12.9688 6.979 12.9688C3.6653 12.9688 0.979004 10.2825 0.979004 6.96875C0.979004 3.65504 3.6653 0.96875 6.979 0.96875C10.2927 0.96875 12.979 3.65504 12.979 6.96875ZM6.98055 3.54007C7.30362 3.54007 7.56552 3.80197 7.56552 4.12504V6.38438H9.82177C10.1448 6.38438 10.4067 6.64628 10.4067 6.96935C10.4067 7.29242 10.1448 7.55432 9.82177 7.55432H7.56552V9.81225C7.56552 10.1353 7.30362 10.3972 6.98055 10.3972C6.65748 10.3972 6.39558 10.1353 6.39558 9.81225V7.55432H4.13456C3.8115 7.55432 3.5496 7.29242 3.5496 6.96935C3.5496 6.64628 3.8115 6.38438 4.13456 6.38438H6.39558V4.12504C6.39558 3.80197 6.65748 3.54007 6.98055 3.54007Z" fill="#AEB9E1" />
+        </svg>
+    )
+
+    const SubscriptionsIcon = () => (
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.2568 1.44994C6.41833 1.17261 6.81898 1.17261 6.98051 1.44994L8.69181 4.38806C8.75098 4.48966 8.85013 4.56169 8.96504 4.58658L12.2882 5.30619C12.6019 5.37412 12.7257 5.75515 12.5118 5.99448L10.2463 8.52995C10.168 8.61762 10.1301 8.73418 10.142 8.85115L10.4845 12.234C10.5168 12.5533 10.1927 12.7888 9.89898 12.6594L6.78752 11.2883C6.67993 11.2409 6.55737 11.2409 6.44979 11.2883L3.33833 12.6594C3.04464 12.7888 2.72051 12.5533 2.75284 12.234L3.09535 8.85115C3.10719 8.73418 3.06932 8.61762 2.99099 8.52995L0.725487 5.99448C0.511646 5.75515 0.635453 5.37412 0.949125 5.30619L4.27227 4.58658C4.38717 4.56169 4.48632 4.48966 4.5455 4.38806L6.2568 1.44994Z" fill="#AEB9E1" />
+        </svg>
+    )
+
+    const stats = [
+        { title: "Pageviews", value: "50.8K", change: "28.4%", isPositive: true, icon: <PageViewsIcon /> },
+        { title: "Monthly users", value: "23.6K", change: "12.6%", isPositive: false, icon: <MonthlyUserIcon /> },
+        { title: "New sign ups", value: "756", change: "3.1%", isPositive: true, icon: <NewSignupsIcon /> },
+        { title: "Subscriptions", value: "2.3K", change: "11.3%", isPositive: true, icon: <SubscriptionsIcon /> },
     ];
+
     return (
         <>
             <div className={`flex flex-row`}>
@@ -250,15 +241,10 @@ export default function DashBoard() {
                             />
                         </div>
                     </div>
-                    <div className={`flex flex-row justify-between`}>
-                        {summaryCards.map((card, index) => {
-                            return (
-                                <SummaryCard
-                                    key={index}
-                                    title={card.title}
-                                />
-                            );
-                        })}
+                    <div className={`flex flex-row justify-between gap-4`}>
+                        {stats.map((stat, index) => (
+                            <StatCard key={index} {...stat} />
+                        ))}
                     </div>
                 </div>
             </div>
